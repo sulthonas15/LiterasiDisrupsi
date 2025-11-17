@@ -1,6 +1,6 @@
 # LiterasiDisrupsi 🛡️
 
-![Project Status](https://img.shields.io/badge/Status-Beta_v2.0-blue?style=flat-square)
+![Project Status](https://img.shields.io/badge/Status-Beta_v1.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 > **Platform Intelijen Digital & Anti-Hoaks**
