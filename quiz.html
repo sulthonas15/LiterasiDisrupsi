@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Simulasi - LiterasiDisrupsi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-[#050505] text-slate-200 font-inter overflow-x-hidden cursor-none selection:bg-purple-500 selection:text-white">
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+
+    <nav class="fixed w-full z-50 top-0 p-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html#quiz" class="hoverable flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-arrow-left"></i> <span class="font-space font-bold">KEMBALI</span>
+            </a>
+            <div class="bg-white/10 border border-white/10 px-4 py-1 rounded-full flex items-center gap-2">
+                <span class="text-xs text-slate-400 uppercase tracking-widest">Total XP</span>
+                <span class="text-lime-400 font-bold font-space" id="totalXP">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 pt-24 min-h-screen flex flex-col justify-center">
+        
+        <div id="levelMenu" class="transition-all duration-500">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-6xl font-bold font-space text-white mb-4">Pilih Misi <span class="text-purple-500">Intelijen</span></h1>
+                <p class="text-slate-400 max-w-xl mx-auto">Selesaikan simulasi untuk meningkatkan pangkat digitalmu. Pilih kategori di bawah ini.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="tilt-card group relative bg-[#0F0F10] border border-purple-500/30 rounded-3xl p-8 hover:bg-purple-900/10 transition-all cursor-pointer" onclick="startLevel('judul')">
+                    <div class="absolute top-4 right-4 bg-purple-500 text-white text-[10px] font-bold px-2 py-1 rounded">EASY</div>
+                    <div class="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400 text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-heading"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white font-space mb-2">Analisis Judul</h3>
+                    <p class="text-sm text-slate-400 mb-4">Identifikasi Clickbait vs Fakta. Jangan terkecoh kata provokatif.</p>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-purple-500 h-full w-0" id="progress-judul"></div>
+                    </div>
+                </div>
+
+                <div class="tilt-card group relative bg-[#0F0F10] border border-cyan-500/30 rounded-3xl p-8 hover:bg-cyan-900/10 transition-all cursor-pointer" onclick="startLevel('visual')">
+                    <div class="absolute top-4 right-4 bg-cyan-500 text-black text-[10px] font-bold px-2 py-1 rounded">MEDIUM</div>
+                    <div class="w-16 h-16 bg-cyan-500/20 rounded-2xl flex items-center justify-center text-cyan-400 text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-image"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white font-space mb-2">Visual Forensik</h3>
+                    <p class="text-sm text-slate-400 mb-4">Deteksi editan Photoshop kasar dan Deepfake AI sederhana.</p>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-cyan-500 h-full w-0" id="progress-visual"></div>
+                    </div>
+                </div>
+
+                <div class="tilt-card relative bg-[#0F0F10] border border-white/5 rounded-3xl p-8 opacity-50 cursor-not-allowed grayscale">
+                    <div class="absolute inset-0 flex items-center justify-center z-10">
+                        <div class="bg-black/80 px-4 py-2 rounded-full border border-white/20 flex items-center gap-2">
+                            <i class="fa-solid fa-lock text-slate-400"></i> <span class="text-xs font-bold text-white">TERKUNCI (Butuh 500 XP)</span>
+                        </div>
+                    </div>
+                    <div class="w-16 h-16 bg-slate-700/20 rounded-2xl flex items-center justify-center text-slate-500 text-3xl mb-6">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-300 font-space mb-2">Logical Fallacy</h3>
+                    <p class="text-sm text-slate-500 mb-4">Menemukan sesat pikir dalam argumen debat.</p>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="gameInterface" class="hidden max-w-2xl mx-auto w-full transition-all duration-500">
+            <div class="flex justify-between items-center mb-8">
+                <button onclick="exitLevel()" class="hoverable text-slate-500 hover:text-white text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-times"></i> Batalkan Misi
+                </button>
+                <div class="flex gap-1" id="lifeIcons">
+                    <i class="fa-solid fa-heart text-red-500"></i>
+                    <i class="fa-solid fa-heart text-red-500"></i>
+                    <i class="fa-solid fa-heart text-red-500"></i>
+                </div>
+            </div>
+
+            <div class="bg-[#0F0F10] border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-slate-800">
+                    <div id="timerBar" class="h-full bg-lime-400 w-full transition-all duration-[1000ms] ease-linear"></div>
+                </div>
+
+                <span id="qCategory" class="text-purple-400 text-xs font-bold tracking-widest uppercase mb-4 block">ANALISIS JUDUL</span>
+                
+                <h2 id="qText" class="text-2xl md:text-3xl text-white font-bold mb-8 font-space leading-snug">
+                    "Loading Question..."
+                </h2>
+
+                <div id="optionsContainer" class="grid grid-cols-1 gap-4">
+                    </div>
+
+                <div id="feedbackArea" class="hidden mt-6 p-4 rounded-xl bg-white/5 border border-white/10 animate-fade-up">
+                    <h4 id="feedbackTitle" class="font-bold text-white mb-1">Judul</h4>
+                    <p id="feedbackText" class="text-sm text-slate-300">Penjelasan...</p>
+                    <button onclick="nextQuestion()" class="hoverable mt-4 w-full bg-white text-black py-2 rounded-lg font-bold text-sm">LANJUT</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultScreen" class="hidden text-center max-w-xl mx-auto animate-fade-up">
+            <div class="w-24 h-24 mx-auto bg-gradient-to-br from-lime-400 to-green-600 rounded-full flex items-center justify-center text-black text-4xl mb-6 shadow-[0_0_50px_-10px_rgba(163,230,53,0.5)]">
+                <i class="fa-solid fa-medal"></i>
+            </div>
+            <h2 class="text-4xl font-bold text-white font-space mb-2">Misi Selesai!</h2>
+            <p class="text-slate-400 mb-8">Intelijen Anda semakin tajam.</p>
+
+            <div class="bg-[#0F0F10] border border-white/10 rounded-2xl p-6 mb-8 grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-slate-500 uppercase">Skor</p>
+                    <p class="text-2xl font-bold text-white font-space" id="scoreResult">0/0</p>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 uppercase">XP Didapat</p>
+                    <p class="text-2xl font-bold text-lime-400 font-space" id="xpResult">+0 XP</p>
+                </div>
+            </div>
+
+            <button onclick="exitLevel()" class="hoverable bg-lime-400 text-black px-8 py-3 rounded-xl font-bold font-space hover:scale-105 transition-transform">
+                KEMBALI KE MENU
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="relative bg-[#020203] pt-20 pb-10 overflow-hidden border-t border-white/5">
+    
+        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-lime-500/50 to-transparent"></div>
+
+        <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 select-none pointer-events-none opacity-[0.03]">
+            <h1 class="text-[15vw] font-bold font-space text-white whitespace-nowrap">LITERASIDISRUPSI</h1>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+                
+                <div class="md:col-span-4 space-y-6">
+                    <a href="#" class="text-2xl font-bold font-space tracking-tighter text-white group inline-block">
+                        LITERASI<span class="text-lime-400">DISRUPSI</span>
+                        <div class="h-1 w-0 bg-lime-400 transition-all duration-300 group-hover:w-full"></div>
+                    </a>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Platform intelijen digital yang didedikasikan untuk memberdayakan pemuda Indonesia dalam melawan gelombang misinformasi di era disrupsi teknologi.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-lime-500/20 hover:border-lime-500 transition-all group">
+                            <i class="fa-brands fa-instagram group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-500/20 hover:border-blue-500 transition-all group">
+                            <i class="fa-brands fa-twitter group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-red-500/20 hover:border-red-500 transition-all group">
+                            <i class="fa-brands fa-youtube group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 space-y-6">
+                    <h4 class="text-white font-bold font-space uppercase tracking-widest text-sm">Platform</h4>
+                    <ul class="space-y-4 text-sm text-slate-400">
+                        <li><a href="#hero" class="hover:text-lime-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] opacity-0 hover-arrow"></i> Cek Fakta</a></li>
+                        <li><a href="#trends" class="hover:text-lime-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] opacity-0 hover-arrow"></i> Dashboard Tren</a></li>
+                        <li><a href="#quiz-section" class="hover:text-lime-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] opacity-0 hover-arrow"></i> Kuis Interaktif</a></li>
+                        <li><a href="#modules" class="hover:text-lime-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] opacity-0 hover-arrow"></i> Modul Belajar</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-2 space-y-6">
+                    <h4 class="text-white font-bold font-space uppercase tracking-widest text-sm">Dukungan</h4>
+                    <ul class="space-y-4 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Laporkan Bug</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Kontributor</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Ketentuan Layanan</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-4 space-y-6">
+                    <h4 class="text-white font-bold font-space uppercase tracking-widest text-sm">Buletin Intelijen</h4>
+                    <p class="text-slate-400 text-sm">Dapatkan notifikasi tren hoaks terbaru langsung ke email Anda setiap minggu.</p>
+                    
+                    <form class="relative group">
+                        <input type="email" placeholder="masukkan@email.com" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-4 pr-32 text-white placeholder-slate-600 focus:outline-none focus:border-lime-500/50 focus:bg-white/10 transition-all">
+                        <button type="button" class="absolute right-2 top-2 bottom-2 bg-lime-400 hover:bg-lime-300 text-black font-bold px-4 rounded-lg text-xs font-space transition-colors">
+                            GABUNG
+                        </button>
+                    </form>
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <i class="fa-solid fa-shield-halved text-lime-500"></i>
+                        <span>Data Anda dienkripsi dan aman.</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-500 text-xs font-space">
+                    &copy; 2025 LiterasiDisrupsi.
+                </p>
+                <div class="flex gap-6 text-xs text-slate-500 font-space">
+                    <span>v2.0.1 (Beta)</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Server Status: Online</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        const database = {
+            'judul': [
+                {
+                    q: "HEBOH! Minum Air Rebusan Pembalut Bisa Sembuhkan Kanker, Dokter Terkejut!",
+                    type: "HOAKS",
+                    desc: "Judul menggunakan kata emosional berlebihan ('HEBOH', 'TERKEJUT') dan klaim medis yang tidak masuk akal tanpa sumber jelas."
+                },
+                {
+                    q: "Kemenkes Keluarkan Aturan Baru Protokol Kesehatan di Sekolah",
+                    type: "FAKTA",
+                    desc: "Judul netral, informatif, dan menyebutkan instansi resmi (Kemenkes) sebagai subjek."
+                },
+                {
+                    q: "VIRAL! Video Penampakan UFO di Monas, Warga Histeris!",
+                    type: "HOAKS",
+                    desc: "Kata 'VIRAL' dan 'Histeris' adalah ciri khas clickbait untuk memancing emosi tanpa bukti ilmiah."
+                }
+            ],
+            'visual': [
+                {
+                    q: "[GAMBAR] Foto Presiden sedang makan di warteg dengan 3 tangan.",
+                    type: "AI/EDITAN",
+                    desc: "Anatomi tubuh manusia yang salah (jumlah jari/tangan berlebih) adalah tanda utama gambar hasil generate AI."
+                },
+                {
+                    q: "[GAMBAR] Foto banjir di Jakarta dengan bayangan gedung yang sesuai arah matahari.",
+                    type: "ASLI",
+                    desc: "Pencahayaan dan bayangan konsisten secara fisika menandakan foto kemungkinan besar asli."
+                }
+            ]
+        };
+
+        let currentQuestions = [];
+        let currentIdx = 0;
+        let score = 0;
+        let totalXP = 0;
+        let timerInterval;
+
+        function startLevel(category) {
+            currentQuestions = database[category];
+            currentIdx = 0;
+            score = 0;
+
+            document.getElementById('levelMenu').classList.add('hidden');
+            document.getElementById('gameInterface').classList.remove('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('qCategory').innerText = category === 'judul' ? "ANALISIS JUDUL" : "VISUAL FORENSIK";
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qData = currentQuestions[currentIdx];
+            const container = document.getElementById('optionsContainer');
+            const feedback = document.getElementById('feedbackArea');
+            
+            feedback.classList.add('hidden');
+            container.innerHTML = '';
+            document.getElementById('qText').innerText = qData.q;
+            
+            const options = categoryOpts(document.getElementById('qCategory').innerText);
+            
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "hoverable w-full py-4 px-6 rounded-xl border border-white/10 bg-white/5 text-left font-bold text-slate-300 hover:bg-white/10 hover:border-white/30 transition-all group flex items-center gap-3";
+                btn.innerHTML = `<span class="w-6 h-6 rounded-full border border-slate-500 flex items-center justify-center text-xs text-slate-500 group-hover:border-white group-hover:text-white transition-colors"></span> ${opt}`;
+                btn.onclick = () => checkAnswer(opt, qData.type);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('timerBar').style.width = '100%';
+        }
+
+        function categoryOpts(cat) {
+            if(cat === "ANALISIS JUDUL") return ["FAKTA", "HOAKS"];
+            return ["ASLI", "AI/EDITAN"];
+        }
+
+        function checkAnswer(selected, correct) {
+            const feedback = document.getElementById('feedbackArea');
+            const title = document.getElementById('feedbackTitle');
+            const text = document.getElementById('feedbackText');
+            const qData = currentQuestions[currentIdx];
+
+            const buttons = document.getElementById('optionsContainer').children;
+            for(let btn of buttons) btn.disabled = true;
+
+            feedback.classList.remove('hidden');
+
+            if (selected === correct) {
+                score++;
+                title.innerHTML = `<span class="text-lime-400"><i class="fa-solid fa-check-circle"></i> TEPAT SEKALI!</span>`;
+                feedback.className = "mt-6 p-4 rounded-xl bg-lime-500/10 border border-lime-500/30 animate-fade-up";
+            } else {
+                title.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-times-circle"></i> KURANG TEPAT</span>`;
+                feedback.className = "mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 animate-fade-up";
+            }
+            text.innerText = qData.desc;
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if(currentIdx < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('gameInterface').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            
+            const earnedXP = score * 50;
+            totalXP += earnedXP;
+            
+            document.getElementById('scoreResult').innerText = `${score}/${currentQuestions.length}`;
+            document.getElementById('xpResult').innerText = `+${earnedXP} XP`;
+            document.getElementById('totalXP').innerText = totalXP;
+
+            const cat = document.getElementById('qCategory').innerText === "ANALISIS JUDUL" ? 'judul' : 'visual';
+            document.getElementById(`progress-${cat}`).style.width = '100%';
+            document.getElementById(`progress-${cat}`).classList.add('bg-lime-400');
+        }
+
+        function exitLevel() {
+            document.getElementById('gameInterface').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('levelMenu').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

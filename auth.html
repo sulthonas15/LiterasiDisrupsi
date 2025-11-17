@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akses Masuk - LiterasiDisrupsi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-[#050505] text-slate-200 font-inter overflow-hidden flex items-center justify-center min-h-screen relative">
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+    <div class="absolute top-0 left-0 w-96 h-96 bg-lime-500/10 rounded-full blur-[100px] animate-pulse"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px]"></div>
+
+    <a href="index.html" class="hoverable absolute top-8 left-8 flex items-center gap-2 text-slate-400 hover:text-lime-400 transition-colors z-50">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span class="font-space font-bold">KEMBALI</span>
+    </a>
+
+    <div class="tilt-card relative w-full max-w-4xl h-[650px] md:h-[600px] bg-[#0F0F10]/80 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 z-10">
+        
+        <div class="relative hidden md:flex flex-col justify-between p-10 bg-gradient-to-br from-lime-900/20 to-black border-r border-white/5">
+            <div class="z-10">
+                <h2 class="font-space text-3xl font-bold text-white mb-2">Literasi<span class="text-lime-400">Disrupsi</span></h2>
+                <p class="text-slate-400 text-sm">Platform Intelijen Anti-Hoaks</p>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-30">
+                <i class="fa-solid fa-fingerprint text-[200px] text-lime-400/20 animate-pulse"></i>
+            </div>
+            <div class="z-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="flex -space-x-2">
+                        <img class="w-8 h-8 rounded-full border-2 border-black" src="https://i.pravatar.cc/100?img=1" alt="">
+                        <img class="w-8 h-8 rounded-full border-2 border-black" src="https://i.pravatar.cc/100?img=2" alt="">
+                        <img class="w-8 h-8 rounded-full border-2 border-black" src="https://i.pravatar.cc/100?img=3" alt="">
+                    </div>
+                    <p class="text-xs text-slate-400">+2,400 Pemuda telah bergabung</p>
+                </div>
+                <p class="text-xs text-slate-500 font-mono">SECURE CONNECTION ESTABLISHED_</p>
+            </div>
+        </div>
+
+        <div class="relative p-10 flex flex-col justify-center">
+            
+            <div id="login-form" class="transition-all duration-500 ease-in-out absolute inset-0 p-10 flex flex-col justify-center">
+                <h3 class="text-2xl font-bold text-white font-space mb-1">Akses Masuk</h3>
+                <p class="text-slate-400 text-sm mb-8">Verifikasi identitas untuk melanjutkan.</p>
+
+                <form id="loginFormAction" class="space-y-5" onsubmit="handleLogin(event)">
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Email</label>
+                        <div class="relative">
+                            <i id="loginEmailIcon" class="fa-regular fa-envelope absolute left-4 top-3.5 text-slate-500 transition-colors"></i>
+                            <input type="email" id="loginEmail" placeholder="nama@email.com" required 
+                                class="hoverable w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-slate-500 transition-all placeholder-slate-600">
+                            <div class="absolute right-4 top-3.5 pointer-events-none">
+                                <i id="loginCheck" class="fa-solid fa-check text-lime-400 opacity-0 transition-opacity"></i>
+                            </div>
+                        </div>
+                        <p id="loginError" class="text-red-500 text-[10px] mt-1 hidden">Format email tidak valid</p>
+                    </div>
+
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Password</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500 group-focus-within:text-lime-400 transition-colors"></i>
+                            <input type="password" id="loginPass" placeholder="••••••••" required 
+                                class="hoverable w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-lime-400 transition-all placeholder-slate-600">
+                        </div>
+                        <div class="flex justify-end mt-2">
+                            <a href="#" class="hoverable text-xs text-lime-400 hover:text-lime-300">Lupa Password?</a>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="loginBtn" disabled 
+                        class="hoverable w-full bg-transparent border border-slate-700 text-slate-700 font-bold py-3 rounded-xl font-space mt-4 transition-all cursor-not-allowed">
+                        MASUKKAN EMAIL VALID
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <p class="text-slate-500 text-sm">Belum punya akun?</p>
+                    <button onclick="switchForm('register')" class="hoverable text-lime-400 font-bold text-sm hover:underline">Daftar Sekarang</button>
+                </div>
+            </div>
+
+            <div id="register-form" class="transition-all duration-500 ease-in-out absolute inset-0 p-10 flex flex-col justify-center opacity-0 translate-x-10 pointer-events-none">
+                <h3 class="text-2xl font-bold text-white font-space mb-1">Registrasi Baru</h3>
+                <p class="text-slate-400 text-sm mb-6">Bergabunglah menjadi agen perubahan.</p>
+
+                <form id="regForm" action="#" class="space-y-4" onsubmit="return validateForm(event)">
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Nama Lengkap</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-user absolute left-4 top-3.5 text-slate-500 group-focus-within:text-lime-400 transition-colors"></i>
+                            <input type="text" placeholder="Agen X" required class="hoverable w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-lime-400 transition-all placeholder-slate-600">
+                        </div>
+                    </div>
+
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Email Formal</label>
+                        <div class="relative">
+                            <i id="emailIcon" class="fa-regular fa-envelope absolute left-4 top-3.5 text-slate-500 transition-colors"></i>
+                            <input type="email" id="regEmail" placeholder="nama@instansi.com" required class="hoverable w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-slate-500 transition-all placeholder-slate-600">
+                            <div class="absolute right-4 top-3.5">
+                                <i id="emailCheck" class="fa-solid fa-check text-lime-400 opacity-0 transition-opacity"></i>
+                            </div>
+                        </div>
+                        <p id="emailError" class="text-red-500 text-[10px] mt-1 hidden">Format email tidak valid</p>
+                    </div>
+
+                    <div class="group">
+                        <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Password Keamanan Tinggi</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500 group-focus-within:text-lime-400 transition-colors"></i>
+                            <input type="password" id="regPass" placeholder="••••••••" required class="hoverable w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-slate-500 transition-all placeholder-slate-600">
+                            <div class="absolute right-4 top-3.5 cursor-pointer hover:text-white text-slate-500" onclick="togglePassVisibility()">
+                                <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3 grid grid-cols-2 gap-2 text-[10px] font-mono transition-all duration-300" id="passwordCriteria">
+                            <div id="rule-upper" class="text-slate-600 flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[4px]"></i> Huruf Besar (A-Z)</div>
+                            <div id="rule-lower" class="text-slate-600 flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[4px]"></i> Huruf Kecil (a-z)</div>
+                            <div id="rule-num" class="text-slate-600 flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[4px]"></i> Angka (0-9)</div>
+                            <div id="rule-sym" class="text-slate-600 flex items-center gap-2 transition-colors"><i class="fa-solid fa-circle text-[4px]"></i> Simbol (!@#$)</div>
+                            <div id="rule-len" class="text-slate-600 flex items-center gap-2 transition-colors col-span-2"><i class="fa-solid fa-circle text-[4px]"></i> Minimal 8 Karakter</div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnSubmit" disabled class="hoverable w-full bg-transparent border border-slate-700 text-slate-700 font-bold py-3 rounded-xl font-space mt-2 transition-all cursor-not-allowed">
+                        LENGKAPI DATA DULU
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-slate-500 text-sm">Sudah punya akses?</p>
+                    <button onclick="switchForm('login')" class="hoverable text-lime-400 font-bold text-sm hover:underline">Login di sini</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+
+    <script>
+        function switchForm(type) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+
+            if (type === 'register') {
+                loginForm.classList.add('opacity-0', '-translate-x-10', 'pointer-events-none');
+                registerForm.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
+            } else {
+                loginForm.classList.remove('opacity-0', '-translate-x-10', 'pointer-events-none');
+                registerForm.classList.add('opacity-0', 'translate-x-10', 'pointer-events-none');
+            }
+        }
+
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const passPatterns = {
+            upper: /[A-Z]/,
+            lower: /[a-z]/,
+            number: /[0-9]/,
+            symbol: /[!@#$%^&*(),.?":{}|<>]/,
+            length: 8
+        };
+
+        const loginEmail = document.getElementById('loginEmail');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const loginEmailIcon = document.getElementById('loginEmailIcon');
+        const loginCheck = document.getElementById('loginCheck');
+
+        if(loginEmail) {
+            loginEmail.addEventListener('input', function() {
+                const val = this.value;
+                if (emailPattern.test(val)) {
+                    this.classList.remove('border-red-500', 'focus:border-red-500', 'border-white/10', 'focus:border-slate-500');
+                    this.classList.add('border-lime-400', 'focus:border-lime-400');
+                    loginEmailIcon.classList.add('text-lime-400');
+                    loginCheck.classList.remove('opacity-0');
+                    loginError.classList.add('hidden');
+                    
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = "MASUK SYSTEM";
+                    loginBtn.classList.remove('bg-transparent', 'border-slate-700', 'text-slate-700', 'cursor-not-allowed');
+                    loginBtn.classList.add('bg-lime-400', 'border-transparent', 'text-black', 'hover:bg-lime-300', 'hover:scale-[1.02]');
+                } else {
+                    if(val.length > 0) {
+                        this.classList.add('border-red-500', 'focus:border-red-500');
+                        this.classList.remove('border-lime-400', 'focus:border-lime-400');
+                        loginEmailIcon.classList.remove('text-lime-400');
+                        loginCheck.classList.add('opacity-0');
+                        loginError.classList.remove('hidden');
+                    } else {
+                        this.classList.remove('border-red-500', 'focus:border-red-500', 'border-lime-400', 'focus:border-lime-400');
+                        this.classList.add('border-white/10');
+                        loginError.classList.add('hidden');
+                    }
+                    loginBtn.disabled = true;
+                    loginBtn.innerHTML = "MASUKKAN EMAIL VALID";
+                    loginBtn.classList.add('bg-transparent', 'border-slate-700', 'text-slate-700', 'cursor-not-allowed');
+                    loginBtn.classList.remove('bg-lime-400', 'border-transparent', 'text-black', 'hover:bg-lime-300', 'hover:scale-[1.02]');
+                }
+            });
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            loginBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> MEMVERIFIKASI...';
+            setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+        }
+
+        const regEmail = document.getElementById('regEmail');
+        const regPass = document.getElementById('regPass');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const emailError = document.getElementById('emailError');
+        const emailIcon = document.getElementById('emailIcon');
+        const emailCheck = document.getElementById('emailCheck');
+
+        regEmail.addEventListener('input', function() {
+            const val = this.value;
+            if (emailPattern.test(val)) {
+                this.classList.remove('border-red-500', 'focus:border-red-500');
+                this.classList.add('border-lime-400', 'focus:border-lime-400');
+                emailIcon.classList.add('text-lime-400');
+                emailCheck.classList.remove('opacity-0');
+                emailError.classList.add('hidden');
+            } else {
+                if(val.length > 0) {
+                    this.classList.add('border-red-500', 'focus:border-red-500');
+                    this.classList.remove('border-lime-400', 'focus:border-lime-400');
+                    emailIcon.classList.remove('text-lime-400');
+                    emailCheck.classList.add('opacity-0');
+                    emailError.classList.remove('hidden');
+                } else {
+                    this.classList.remove('border-red-500', 'focus:border-red-500', 'border-lime-400');
+                    this.classList.add('border-white/10');
+                    emailError.classList.add('hidden');
+                }
+            }
+            checkAllValid();
+        });
+
+        regPass.addEventListener('input', function() {
+            const val = this.value;
+            
+            updateRule('rule-upper', passPatterns.upper.test(val));
+            updateRule('rule-lower', passPatterns.lower.test(val));
+            updateRule('rule-num', passPatterns.number.test(val));
+            updateRule('rule-sym', passPatterns.symbol.test(val));
+            updateRule('rule-len', val.length >= passPatterns.length);
+
+            if (isPassValid(val)) {
+                this.classList.add('border-lime-400', 'focus:border-lime-400');
+                this.classList.remove('border-white/10');
+            } else {
+                this.classList.remove('border-lime-400', 'focus:border-lime-400');
+            }
+            checkAllValid();
+        });
+
+        function updateRule(id, isValid) {
+            const el = document.getElementById(id);
+            if (isValid) {
+                el.classList.remove('text-slate-600');
+                el.classList.add('text-lime-400', 'font-bold');
+                el.querySelector('i').classList.remove('fa-circle');
+                el.querySelector('i').classList.add('fa-check');
+            } else {
+                el.classList.add('text-slate-600');
+                el.classList.remove('text-lime-400', 'font-bold');
+                el.querySelector('i').classList.add('fa-circle');
+                el.querySelector('i').classList.remove('fa-check');
+            }
+        }
+
+        function isPassValid(val) {
+            return passPatterns.upper.test(val) &&
+                   passPatterns.lower.test(val) &&
+                   passPatterns.number.test(val) &&
+                   passPatterns.symbol.test(val) &&
+                   val.length >= passPatterns.length;
+        }
+
+        function checkAllValid() {
+            const emailValid = emailPattern.test(regEmail.value);
+            const passValid = isPassValid(regPass.value);
+
+            if (emailValid && passValid) {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = "BUAT AKUN BARU";
+                
+                btnSubmit.classList.remove('bg-transparent', 'border-slate-700', 'text-slate-700', 'cursor-not-allowed');
+                btnSubmit.classList.add('bg-lime-400', 'border-transparent', 'text-black', 'hover:bg-lime-300', 'hover:scale-[1.02]');
+            } else {
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = "LENGKAPI DATA DULU";
+                
+                btnSubmit.classList.add('bg-transparent', 'border-slate-700', 'text-slate-700', 'cursor-not-allowed');
+                btnSubmit.classList.remove('bg-lime-400', 'border-transparent', 'text-black', 'hover:bg-lime-300', 'hover:scale-[1.02]');
+            }
+        }
+
+        function togglePassVisibility() {
+            const input = document.getElementById('regPass');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+                icon.parentElement.classList.add('text-lime-400');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+                icon.parentElement.classList.remove('text-lime-400');
+            }
+        }
+
+        function validateForm(e) {
+            e.preventDefault();
+            const originalText = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> MENDAFTARKAN AGEN...';
+            btnSubmit.classList.add('cursor-wait');
+            
+            setTimeout(() => { window.location.href = "index.html"; }, 1500);
+        }
+    </script>
+</body>
+</html>
